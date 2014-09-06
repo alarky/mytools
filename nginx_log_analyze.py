@@ -32,30 +32,30 @@ total_count = len(logs)
   'vhost': 'localhost'}
 """
 
-apptimes_of = {}
+reqtimes_of = {}
 for log in logs:
     uri = re.sub(r'\d+', '', log["uri"])
 
-    if not apptimes_of.has_key(uri):
-        apptimes_of[uri] = []
-    apptimes_of[uri].append(log["apptime"])
+    if not reqtimes_of.has_key(uri):
+        reqtimes_of[uri] = []
+    reqtimes_of[uri].append(log["reqtime"])
 
 print "=== count ==="
 print "%d (total)" % total_count
-for uri, apptimes in sorted(apptimes_of.items(), key=lambda x:len(x[1]), reverse=True):
-    count = len(apptimes)
+for uri, reqtimes in sorted(reqtimes_of.items(), key=lambda x:len(x[1]), reverse=True):
+    count = len(reqtimes)
     print "%d (%3d%% ) %s" % (count, float(count)/total_count*100, uri)
 
-print "=== apptime ==="
+print "=== reqtime ==="
 result_of = {}
-for uri, apptimes in apptimes_of.items():
-    apptimes = [float(x) for x in apptimes]
+for uri, reqtimes in reqtimes_of.items():
+    reqtimes = [float(x) for x in reqtimes]
     result_of[uri] = {
-        "sum": sum(apptimes),
-        "avg": sum(apptimes)/len(apptimes),
-        "max": max(apptimes),
-        "min": min(apptimes),
-        "med": (max(apptimes)+min(apptimes))/2,
+        "sum": sum(reqtimes),
+        "avg": sum(reqtimes)/len(reqtimes),
+        "max": max(reqtimes),
+        "min": min(reqtimes),
+        "med": (max(reqtimes)+min(reqtimes))/2,
     }
 
 for uri, result in sorted(result_of.items(), key=lambda x:x[1][sortkey], reverse=True):
